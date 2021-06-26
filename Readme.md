@@ -3,7 +3,7 @@
 ## To pull this repository
 
 ```
-git clone --recurse-submodules ?
+git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
 ```
 
 # TODO
