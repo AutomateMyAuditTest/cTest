@@ -1,9 +1,12 @@
 # Anoesis Plugin Group Structure Template - using Catch2
 
-## To pull this repository
+### To download this template and use for a project,
+
+* Make a new project based on the template in Github
+* clone that on your system
 
 ```
-git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
+git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/NEW_NAME_HERE.git
 ```
 
 # TODO
