@@ -3,10 +3,11 @@
 ### To download this template and use for a project,
 
 * Make a new project based on the template in Github
-* clone that on your system
+* clone that on your system (using the command below)
+* change "anoTemplates/gTest" to NEW_NAME
 
 ```
-git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/NEW_NAME_HERE.git
+git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/NEW_NAME.git
 ```
 
 # TODO
