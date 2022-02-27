@@ -15,13 +15,13 @@ class Laf1 : public juce::LookAndFeel_V4
                           bool isMouseOverButton,
                           bool isButtonDown) override
     {
-        auto fontSize = juce::jmin(48.0f, button.getHeight() * 0.75f);
+        auto fontSize = juce::jmin(48.0f, (float) button.getHeight() * 0.75f);
         auto tickWidth = fontSize * 1.1f;
 
         drawTickBox(g,
                     button,
                     4.0f,
-                    (button.getHeight() - tickWidth) * 0.5f,
+                    ((float) button.getHeight() - tickWidth) * 0.5f,
                     tickWidth,
                     tickWidth,
                     button.getToggleState(),
@@ -76,10 +76,12 @@ class Laf1 : public juce::LookAndFeel_V4
 
         juce::Rectangle<int> arrowZone(width - 30, 0, 20, height);
         juce::Path path;
-        path.startNewSubPath(arrowZone.getX() + 3.0f, arrowZone.getCentreY() - 2.0f);
+        path.startNewSubPath((float) arrowZone.getX() + 3.0f,
+                             (float) arrowZone.getCentreY() - 2.0f);
         path.lineTo(static_cast<float>(arrowZone.getCentreX()),
-                    arrowZone.getCentreY() + 3.0f);
-        path.lineTo(arrowZone.getRight() - 3.0f, arrowZone.getCentreY() - 2.0f);
+                    (float) arrowZone.getCentreY() + 3.0f);
+        path.lineTo((float) arrowZone.getRight() - 3.0f,
+                    (float) arrowZone.getCentreY() - 2.0f);
 
         g.setColour(box.findColour(juce::ComboBox::arrowColourId)
                         .withAlpha((box.isEnabled() ? 0.9f : 0.2f)));
@@ -88,7 +90,7 @@ class Laf1 : public juce::LookAndFeel_V4
 
     juce::Font getComboBoxFont(juce::ComboBox& box) override
     {
-        return {juce::jmin(48.0f, box.getHeight() * 0.85f)};
+        return {juce::jmin(48.0f, (float) box.getHeight() * 0.85f)};
     }
 
     void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override
@@ -110,10 +112,11 @@ class Laf1 : public juce::LookAndFeel_V4
                           juce::Slider& slider) override
     {
         const float size = 6.0f;
-        const float diameter = juce::jmin(width, height) - 4.0f;
-        const float radius = (diameter / 2.0f) * std::cos(juce::float_Pi / size);
-        const float centreX = x + width * 0.5f;
-        const float centreY = y + height * 0.5f;
+        const float diameter = (float) juce::jmin(width, height) - 4.0f;
+        const float radius =
+            (diameter / 2.0f) * std::cos(juce::MathConstants<float>::pi / size);
+        const float centreX = (float) x + (float) width * 0.5f;
+        const float centreY = (float) y + (float) height * 0.5f;
         const float rx = centreX - radius;
         const float ry = centreY - radius;
         const float rw = radius * 2.0f;

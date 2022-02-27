@@ -22,6 +22,8 @@ void ano::Gain::Processor<SampleType, maxNumChannels>::prepare(
 
     sampleRate = (float) spec.sampleRate;
 
+    setRampDurationSeconds(0.05f);
+
     reset();
 }
 

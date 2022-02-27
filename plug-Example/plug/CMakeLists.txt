@@ -6,7 +6,7 @@ set (BaseTargetName plug-Example)
 set (CompanyName AnoesisAudio)
 set (Website website)
 set (ManuCode Anoe)
-set (PluginCode Ato1)
+set (PluginCode Ace1)
 set (Description "Example project for anoTemplate")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -32,7 +32,7 @@ endif()
 project(${BaseTargetName} VERSION 0.0.1)
 
 ###############################################################################
-##############################   Plugin settings   ############################
+##################################   Plugins   ################################
 ###############################################################################
 
 juce_add_plugin("${BaseTargetName}"

@@ -6,6 +6,7 @@
 #pragma once
 
 #include <ano_processor/ano_processor.h>
+#include <ano_gui/ano_gui.h>
 
 namespace ano
 {

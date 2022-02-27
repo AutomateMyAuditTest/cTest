@@ -64,6 +64,8 @@
 **/*.ipynb_checkpoints/
 *.ipynb_checkpoint
 */venv/**
+venv/
+__pycache__
 
 # max msp
 gen_dsp/*

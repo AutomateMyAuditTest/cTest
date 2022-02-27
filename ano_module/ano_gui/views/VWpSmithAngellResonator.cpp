@@ -31,22 +31,26 @@ void ano::VWpSmithAngellResonator::paint(juce::Graphics& g)
     float rows = 16.0;
     float cols = 22.0;
 
-    for (int i = 0; i < rows; ++i) // rows
+    for (int i = 0; i < (int)rows; ++i) // rows
     {
         g.setColour(juce::Colours::silver.withAlpha(0.3f));
-        auto x = bounds.getY() + bounds.getHeight() * i * (1.0f / rows);
+        auto x = (float)bounds.getY() + (float)bounds.getHeight() * (float)i * (1.0f / rows);
         if (i > 0)
-            g.drawHorizontalLine(
-                juce::roundToInt(x), bounds.getX(), bounds.getRight());
+        {
+            auto xx = juce::roundToInt(x);
+            g.drawHorizontalLine(xx, (float)bounds.getX(), (float)bounds.getRight());
+        }  
     }
 
-    for (int i = 0; i < cols; ++i) // columns
+    for (int i = 0; i < (int)cols; ++i) // columns
     {
         g.setColour(juce::Colours::silver.withAlpha(0.3f));
-        auto x = bounds.getX() + bounds.getWidth() * i * (1.0f / cols);
+        auto x = (float)bounds.getX() + (float)bounds.getWidth() * (float)i * (1.0f / cols);
         if (i > 0)
-            g.drawVerticalLine(
-                juce::roundToInt(x), bounds.getY(), bounds.getBottom());
+        {
+            auto xx = juce::roundToInt(x);
+            g.drawHorizontalLine(xx, (float)bounds.getX(), (float)bounds.getRight());
+        }  
     }
     // end gui dev grid -------------------------------------------
 }
