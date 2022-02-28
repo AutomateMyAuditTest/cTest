@@ -63,9 +63,11 @@ set(SourceFiles
     # headers
     src/PluginEditor.h
     src/PluginProcessor.h
+    # src/PluginParameters.h
     # sources
     src/PluginEditor.cpp
     src/PluginProcessor.cpp
+    # src/PluginParameters.cpp
 )
 target_sources("${BaseTargetName}" PRIVATE ${SourceFiles})
 

@@ -4,6 +4,7 @@ The main purpose of this repository is to act as a cross-platform template for p
 
 ### To download this template and use for a project (on mac)
 
+* Install Catch2 (instructions below)
 * Clone this repository to your system (using the command below).
 * Change "cTest" to SOME_NEW_NAME.
 * Delete the .git folder and the .gitmodules file.
@@ -46,6 +47,21 @@ git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
   * [Offline use](https://docs.gitlab.com/ee/topics/offline/quick_start_guide.html)
 * CI: Testing - need to deal with return codes and their impact on next steps.
 * CI: Download pluginval each time run? Maybe check if have right version instead them determine if need to download?  Their [guidance](https://github.com/Tracktion/pluginval/blob/develop/docs/Adding%20pluginval%20to%20CI.md) suggests this.
+
+# Unit testing
+* Examples - [TestsTalk](https://github.com/Sinecure-Audio/TestsTalk.git) and [UnitsTalk](https://github.com/Sinecure-Audio/UnitsTalk.git). Also helpful -
+  * https://youtu.be/QuW6omL-LkQ
+  * https://github.com/Sinecure-Audio/Units.git
+  * https://github.com/sudara/melatonin_audio_block_test_helpers.git
+
+# Installing Catch2
+* See instructions here -> https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#installing-catch2-from-git-repository
+```
+$ git clone https://github.com/catchorg/Catch2.git
+$ cd Catch2
+$ cmake -Bbuild -H. -DBUILD_TESTING=OFF
+$ sudo cmake --build build/ --target install
+```
 
 # Submodules
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "PluginParameters.h"
+#include <ano_processor/ano_processor.h>
 
 //==============================================================================
 class AudioPluginAudioProcessor : public juce::AudioProcessor
@@ -44,5 +46,12 @@ public:
 
 private:
     //==============================================================================
+    // juce::UndoManager undoManager;
+    // juce::AudioProcessorValueTreeState state {*this,
+    //                                           &undoManager,
+    //                                           juce::Identifier("state"),
+    //                                           PluginParameters::makeLayout()};
+    // PluginParameters params {state};
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };
