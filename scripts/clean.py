@@ -1,5 +1,10 @@
 '''
 This script will remove the _builds directory and all of its contents.
+
+On mac, this will also remove the built files and test output that is stored
+in the user audio directory.
+
+To run, use like 'python3 scripts/clean.py'.
 '''
 
 import os

@@ -1,10 +1,15 @@
 '''
-This script will run cmake. To run, on mac, just use 'python3 scripts/cmake.py', which will
-make both debug and release builds possible.
+This script will run cmake. To run, on mac, just use 'python3 scripts/cmake.py', 
+which will make both debug and release builds possible.
 
 On Linux and Windows (which use Ninja), CMake needs to be run with awareness of which
-types of builds the user would like to do.  So, to use this file, call the command like
-'python scripts/cmake.py d' for debug and 'python scripts/cmake.py r' for release.
+types of builds the user would like to do.
+
+Once cmake has run, a file will be written telling which build_type is to be used during
+building and testing.
+
+To use this file, call the command like 'python scripts/cmake.py d' or 
+'python scripts/cmake.py' for debug or 'python scripts/cmake.py r' for release.
 '''
 
 import os

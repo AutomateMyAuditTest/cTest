@@ -1,7 +1,8 @@
 '''
 This script will run unit tests on all plugins in this project.
-The plugins must have already been built. To run, use
-python3 scripts/tests.py
+The plugins must have already been built or this will fail. 
+
+To perform testing, use 'python3 scripts/tests.py'.
 '''
 
 import os

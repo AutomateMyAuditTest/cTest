@@ -1,10 +1,9 @@
 '''
 This script will build all plugins in this project. CMake must have already been run.
+This script takes an (optional) argument - either 'd' for Debug or 'r' for Release.
+If this is run without an argument, a Debug build will be done.
 
-This script takes an argument - either 'd' for Debug or 'r' for Release
-
-To run, use like
-python scripts/build.py d
+To run, use like 'python3 scripts/build.py d'.
 '''
 
 import os
