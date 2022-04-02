@@ -46,12 +46,12 @@ public:
 
 private:
     //==============================================================================
-    // juce::UndoManager undoManager;
-    // juce::AudioProcessorValueTreeState state {*this,
-    //                                           &undoManager,
-    //                                           juce::Identifier("state"),
-    //                                           PluginParameters::makeLayout()};
-    // PluginParameters params {state};
+    juce::UndoManager undoManager;
+    juce::AudioProcessorValueTreeState state {*this,
+                                              &undoManager,
+                                              juce::Identifier("state"),
+                                              PluginParameters::makeLayout()};
+    PluginParameters params {state};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };

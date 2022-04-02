@@ -13,7 +13,7 @@ PluginParameters::PluginParameters(juce::AudioProcessorValueTreeState& state)
 juce::AudioProcessorValueTreeState::ParameterLayout PluginParameters::makeLayout()
 {
     return {std::make_unique<juce::AudioParameterFloat>(
-        ParameterName::prmGainId,
+        juce::ParameterID {ParameterName::prmGainId, 1},
         TRANS("Gain"),
         juce::NormalisableRange<float>(-60.0f, 0.0f, 0.0001f),
         -10.f,
