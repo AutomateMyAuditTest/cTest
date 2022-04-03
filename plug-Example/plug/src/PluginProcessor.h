@@ -57,5 +57,7 @@ private:
                                               PluginParameters::makeLayout()};
     PluginParameters params {state};
 
+    ano::Gain::Processor<float> gain;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };

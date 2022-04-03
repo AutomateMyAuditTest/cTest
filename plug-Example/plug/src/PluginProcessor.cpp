@@ -12,6 +12,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 #endif
     )
 {
+    gain.reset();
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -87,15 +88,21 @@ void AudioPluginAudioProcessor::changeProgramName(int index,
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-    juce::ignoreUnused(sampleRate, samplesPerBlock);
+    // When playback stops, you can use this as an opportunity to free up any
+    // spare memory, etc.
+    juce::dsp::ProcessSpec spec = {
+        sampleRate,
+        static_cast<juce::uint32>(samplesPerBlock),
+        static_cast<juce::uint32>(this->getTotalNumOutputChannels())};
+
+    gain.prepare(spec);
 }
 
 void AudioPluginAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    gain.reset();
 }
 
 bool AudioPluginAudioProcessor::isBusesLayoutSupported(
@@ -147,12 +154,18 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer(channel);
-        juce::ignoreUnused(channelData);
-        // ..do something to the data...
-    }
+    // for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    // {
+    //     auto* channelData = buffer.getWritePointer(channel);
+    //     juce::ignoreUnused(channelData);
+    //     // ..do something to the data...
+    // }
+
+    juce::dsp::AudioBlock<float> block(buffer);
+    const juce::dsp::ProcessContextReplacing<float>& context = block;
+
+    gain.state->gain = params.prmGain->get();
+    gain.process(context);
 }
 
 //==============================================================================
@@ -163,7 +176,8 @@ bool AudioPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 {
-    return new AudioPluginAudioProcessorEditor(*this);
+    // return new AudioPluginAudioProcessorEditor(*this);
+    return new juce::GenericAudioProcessorEditor(*this); // no editor
 }
 
 //==============================================================================
@@ -172,7 +186,9 @@ void AudioPluginAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
-    juce::ignoreUnused(destData);
+    auto s = state.copyState();
+    std::unique_ptr<juce::XmlElement> xml(s.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void AudioPluginAudioProcessor::setStateInformation(const void* data,
@@ -180,7 +196,14 @@ void AudioPluginAudioProcessor::setStateInformation(const void* data,
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
-    juce::ignoreUnused(data, sizeInBytes);
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    if (xmlState != nullptr)
+    {
+        if (xmlState->hasTagName(state.state.getType()))
+        {
+            state.replaceState(juce::ValueTree::fromXml(*xmlState));
+        }
+    }
 }
 
 //==============================================================================
