@@ -189,3 +189,13 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new AudioPluginAudioProcessor();
 }
+
+juce::AudioProcessorValueTreeState& AudioPluginAudioProcessor::getPluginState()
+{
+    return state;
+}
+
+PluginParameters& AudioPluginAudioProcessor::getParams()
+{
+    return params;
+}
