@@ -1,0 +1,136 @@
+name: ctest build_debug.yml
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.os.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - runner: macos-latest
+            name: mac
+          - runner: ubuntu-latest
+            name: ubuntu
+          - runner: windows-latest
+            name: windows
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Print runner.os, runner.workspace, matrix.os.runner, github.workspace
+        run: echo 'runner.os == ${{ runner.os }}';
+            echo 'runner.workspace == ${{ runner.workspace }}';
+            echo 'matrix.os.runner == ${{ matrix.os.runner }}';
+            echo 'github.workspace == ${{ github.workspace }}'
+
+      - name: Install dependencies for Linux
+        if: startsWith(matrix.os.runner, 'ubuntu')
+        run: sudo apt -qq update && sudo apt install  -y libasound2-dev libjack-jackd2-dev libcurl4-openssl-dev libfreetype6-dev libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev mesa-common-dev
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{ runner.workspace }}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{ runner.workspace }}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+      - name: Build
+        working-directory: ${{ runner.workspace }}/build
+        shell: bash
+        run: cmake --build . --config $BUILD_TYPE --verbose
+
+      - name: Test
+        working-directory: ${{ runner.workspace }}/build
+        shell: bash
+        run: ctest -C $BUILD_TYPE
+
+      # Package and release for macOS
+      - name: Prepare Artefacts macOS
+        if: startsWith(matrix.os.runner, 'macOS')
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          mkdir ${{ github.workspace }}/ctest-${{ runner.os }}
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/AU/plug-Example.component ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example.component;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/VST/plug-Example.vst ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example.vst;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/VST3/plug-Example.vst3 ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example.vst3;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/Standalone/plug-Example.app ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example.app;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_tests ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example_tests;
+          cd ${{ runner.workspace }}
+          ls -Rla > ${{ github.workspace }}/ctest-${{ runner.os }}/listing_${{ runner.os }}.txt;
+          cd ${{ github.workspace }}
+          zip -r -q ctest-${{ runner.os }}.zip ctest-${{ runner.os }}
+
+      - name: Archive Artifacts macOS
+        if: startsWith(matrix.os.runner, 'macOS')
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctest-${{ runner.os }}
+          path: ctest-${{ runner.os }}.zip
+
+      # Package and release for Linux
+      - name: Prepare Artefacts Linux
+        if: startsWith(matrix.os.runner, 'ubuntu')
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          mkdir ${{ github.workspace }}/ctest-${{ runner.os }}
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/VST3/plug-Example.vst3 ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example.vst3;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_artefacts/Debug/Standalone/plug-Example ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example;
+          mv ${{ runner.workspace }}/build/plug-Example/plug/plug-Example_tests ${{ github.workspace }}/ctest-${{ runner.os }}/plug-Example_tests;
+          cd ${{ runner.workspace }}
+          ls -Rla > ${{ github.workspace }}/ctest-${{ runner.os }}/listing_${{ runner.os }}.txt;
+          cd ${{ github.workspace }}
+          zip -r -q ctest-${{ runner.os }}.zip ctest-${{ runner.os }}
+
+      - name: Archive Artifacts Linux
+        if: startsWith(matrix.os.runner, 'ubuntu')
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctest-${{ runner.os }}
+          path: ctest-${{ runner.os }}.zip
+      
+      # Package and release for Windows
+      - name: Prepare Artefacts Windows
+        if: startsWith(matrix.os.runner, 'windows')
+        working-directory: ${{ github.workspace }}
+        shell: pwsh
+        run: |
+          $FolderName = "${{ github.workspace }}\ctest-${{ runner.os }}"
+          New-Item $FolderName -ItemType Directory
+          Copy-Item "${{ runner.workspace }}\build\plug-Example\plug\plug-Example_artefacts\Debug\VST3\plug-Example.vst3" -Destination "${{ github.workspace }}\ctest-${{ runner.os }}"
+          Copy-Item "${{ runner.workspace }}\build\plug-Example\plug\plug-Example_artefacts\Debug\Standalone\plug-Example.exe" -Destination "${{ github.workspace }}\ctest-${{ runner.os }}"
+          Copy-Item "${{ runner.workspace }}\build\plug-Example\plug\Debug\plug-Example_tests.exe" -Destination "${{ github.workspace }}\ctest-${{ runner.os }}"
+          $DirectoryListing = Get-ChildItem -Path ${{ runner.workspace }} -Recurse
+          Set-Content -Path ${{ github.workspace }}\ctest-${{ runner.os }}\listing_${{ runner.os }}.txt -Value ($DirectoryListing)
+          $Archive = "ctest-${{ runner.os }}.zip"
+          7z a -tzip $Archive $FolderName
+
+      - name: Archive Artifacts Windows
+        if: startsWith(matrix.os.runner, 'windows')
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctest-${{ runner.os }}
+          path: ctest-${{ runner.os }}.zip
+
+      - name: Release Artifacts All
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          prerelease: false
+          draft: false
+          files: ctest-${{ runner.os }}.zip
