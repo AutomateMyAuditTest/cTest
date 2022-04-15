@@ -310,11 +310,21 @@ TODO
 * Standalone
   * C:\Program Files\AnoesisAudio\Standalone
 
-# How the build system works
+# How the local build system works
 * run cmake like ``` python3 scripts/cmake.py ```
 * run build like ``` python3 scripts/build.py ```
 * run tests like ``` python3 scripts/tests.py ```
 * run clean like ``` python3 scripts/clean.py ```
+
+# How the Github build system works
+* build_debug.yml is run when the tag is updated as below
+
+```
+git add --all
+git commit -m "<text>"
+git tag <tagname>
+git push origin --tags
+```
 
 # To add new plugin projects
 * Note: In a real use of this framework, plug-Example-fx and plug-Example-syn would be removed, and copies of these would be starting points for real plugin projects.
