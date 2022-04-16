@@ -1,14 +1,6 @@
 cmake_minimum_required(VERSION 3.18.4)
 
-###############################################################################
-#############################   Project settings   ############################
-###############################################################################
-
 project(AnoTemplate VERSION 0.0.1)
-
-###############################################################################
-##############################   Subdirectories   #############################
-###############################################################################
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/JUCE)
 juce_set_vst2_sdk_path(VST2_SDK)
@@ -22,4 +14,3 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 add_subdirectory(plug-Example/plug)
-# add_subdirectory(plug-Example-fx/plug)

@@ -1,5 +1,5 @@
 ###############################################################################
-#############################   Plugin settings   #############################
+#################################### Plugin ###################################
 ###############################################################################
 
 set (BaseTargetName plug-Example)
@@ -30,10 +30,6 @@ if(WIN32)
 endif()
 
 project(${BaseTargetName} VERSION 0.0.1)
-
-###############################################################################
-##################################   Plugins   ################################
-###############################################################################
 
 juce_add_plugin("${BaseTargetName}"
     # see https://github.com/juce-framework/JUCE/blob/master/docs/CMake%20API.md
@@ -136,8 +132,6 @@ set_target_properties("${BaseTargetName}_tests"
     PROPERTIES 
         XCODE_GENERATE_SCHEME ON)
 
-source_group(TREE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles})
-
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles})
 include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
 catch_discover_tests("${BaseTargetName}_tests")
