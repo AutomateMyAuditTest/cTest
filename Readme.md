@@ -28,7 +28,9 @@ git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
 ```
 
 # TODO
+* Make Github Actions find tests.
 * Make Github Actions include tests using Pluginval.
+* Rename project from cTest to ...?
 * Make GUI scale the right way. See [this](https://forum.juce.com/t/current-advised-way-to-do-plugin-editor-contents-scaling/48044/10)
 * plug-Example-syn: use svg for a knob, add svg background, add svg logo
 * plug-Example-fx: Make use svgs for background, knob, and logo.
