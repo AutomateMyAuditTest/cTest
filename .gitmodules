@@ -2,3 +2,7 @@
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE.git
 	branch = develop
+[submodule "Catch2"]
+	path = Catch2
+	url = https://github.com/catchorg/Catch2.git
+	branch = devel

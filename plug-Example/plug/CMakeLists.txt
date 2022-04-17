@@ -9,7 +9,7 @@ set (ManuCode Anoe)
 set (PluginCode Ace1)
 set (Description "Example project for anoTemplate")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if(APPLE)
     message(STATUS "Found APPLE")
@@ -108,12 +108,13 @@ target_link_libraries("${BaseTargetName}"
 ################################## Unit Tests #################################
 ###############################################################################
 
-# include(CTest)
 enable_testing()
 
-set(TestFiles
-    tests/Main.cpp
-    tests/TestOne.cpp)
+file(GLOB_RECURSE TestFiles 
+    CONFIGURE_DEPENDS 
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles})
 
 add_executable("${BaseTargetName}_tests" ${TestFiles})
 
@@ -123,15 +124,14 @@ target_include_directories("${BaseTargetName}_tests"
 
 target_link_libraries("${BaseTargetName}_tests" 
     PRIVATE 
-        Catch2::Catch2 
+        Catch2::Catch2WithMain
         "${PROJECT_NAME}" 
         ${JUCE_DEPENDENCIES}
         ${ANO_MODULE_DEPENDENCIES})
 
-set_target_properties("${BaseTargetName}_tests" 
-    PROPERTIES 
-        XCODE_GENERATE_SCHEME ON)
+set_target_properties("${BaseTargetName}_tests" PROPERTIES XCODE_GENERATE_SCHEME ON)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles})
-include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
+
+include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 catch_discover_tests("${BaseTargetName}_tests")

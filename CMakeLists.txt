@@ -1,16 +1,13 @@
-cmake_minimum_required(VERSION 3.18.4)
+cmake_minimum_required(VERSION 3.21)
 
 project(AnoTemplate VERSION 0.0.1)
 
+set(CMAKE_XCODE_GENERATE_SCHEME OFF)
+
+option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects" ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/JUCE)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Catch2)
 juce_set_vst2_sdk_path(VST2_SDK)
 add_subdirectory(ano_module)
-
-Include(FetchContent)
-FetchContent_Declare(
-    Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG        v2.13.8)
-FetchContent_MakeAvailable(Catch2)
 
 add_subdirectory(plug-Example/plug)

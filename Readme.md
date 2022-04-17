@@ -28,6 +28,7 @@ git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
 ```
 
 # TODO
+* Make Github Actions include tests using Pluginval.
 * Make GUI scale the right way. See [this](https://forum.juce.com/t/current-advised-way-to-do-plugin-editor-contents-scaling/48044/10)
 * plug-Example-syn: use svg for a knob, add svg background, add svg logo
 * plug-Example-fx: Make use svgs for background, knob, and logo.
@@ -67,10 +68,12 @@ $ sudo cmake --build build/ --target install
 
 * Use the -b flag to choose the branch to use.
 
-## Submodule for JUCE
+## Submodules for JUCE and Catch2
 
 ```
 git submodule add -b develop https://github.com/juce-framework/JUCE.git
+
+git submodule add -b devel https://github.com/catchorg/Catch2.git
 ```
 
 ## To udpate Submodules
