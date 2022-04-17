@@ -11,3 +11,5 @@ juce_set_vst2_sdk_path(VST2_SDK)
 add_subdirectory(ano_module)
 
 add_subdirectory(plug-Example/plug)
+
+enable_testing() # need to create CTestTestfile.cmake files for each project
