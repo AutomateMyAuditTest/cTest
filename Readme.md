@@ -28,6 +28,7 @@ git clone --recurse-submodules https://github.com/MyPublicGitHubAcct/cTest.git
 ```
 
 # TODO
+* Use what is in Github Actions locally (e.g., ctest to run tests) - do in CICDExample first!
 * Make Github Actions find tests.
 * Make Github Actions include tests using Pluginval.
 * Rename project from cTest to ...?
